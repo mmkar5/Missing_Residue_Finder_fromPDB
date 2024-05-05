@@ -1,4 +1,4 @@
-from project1 import pdbseq_with_missing_res, get_input, get_PDBx
+from PDB_Missing_Residue import pdbseq_with_missing_res, get_input, get_PDBx
 import argparse
 from Bio.PDB.MMCIF2Dict import MMCIF2Dict
 from Bio.SeqUtils import seq1
