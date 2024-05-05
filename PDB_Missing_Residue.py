@@ -7,7 +7,6 @@ import csv
 import sys
 
 def main():
-    results = []
     args = get_args()
 
     if args.path:
@@ -28,6 +27,7 @@ def main():
         output_file = None
 
     for filename in get_PDBx(path, pdb_ids, all_in_path=args.all_in_path):
+        results = []
         pdb_info = MMCIF2Dict(filename)
         chains = pdb_info["_pdbx_poly_seq_scheme.asym_id"]
         res_names = pdb_info["_pdbx_poly_seq_scheme.pdb_mon_id"]
