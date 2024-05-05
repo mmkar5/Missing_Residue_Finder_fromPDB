@@ -162,7 +162,12 @@ def get_args():
     args = parser.parse_args()
     return args
 
-def get_input(filepath=None,all_in_path=None):
+def get_input(filepath=None,all_in_path=False):
+    '''Returns the pdb_ids as a list. Takes input from user as a input file containing pdb_ids in seperate lines,
+       or prompts user to provide the pdb id in the terminal.
+       filepath= name of the input file(with filepath, if not in cwd) (optional)
+       all_in_path= True if all the mmCIF files in the path needs to be processed (Default=False)
+    ''' 
     pdb_ids=[]
     if filepath:
         with open(filepath) as file:
@@ -191,7 +196,7 @@ def get_PDBx(path, pdb_ids=None, all_in_path=False):
     if pdb_ids:
         pdbl = PDBList()
         pdbl.download_pdb_files(pdb_ids, file_format="mmCif", pdir=path)
-    if all_in_path == True:
+    if all_in_path:
         for filename in glob.glob(os.path.join(path, "*.cif")):
             yield filename
     else:
