@@ -1,8 +1,6 @@
 from PDB_Missing_Residue import pdbseq_with_missing_res, get_input, get_PDBx
 import argparse
 from Bio.PDB.MMCIF2Dict import MMCIF2Dict
-from Bio.SeqUtils import seq1
-from Bio.PDB.PDBList import PDBList
 import os
 import sys
 
