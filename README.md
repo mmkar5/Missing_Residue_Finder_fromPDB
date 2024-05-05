@@ -10,7 +10,7 @@ The program **PDB_Missing_Residue.py** takes as input PDB_IDs or looks for all t
 - One letter code of the missing residues
 - Range of the position of missing residues and their length
 
-`usage: project1.py [-h] [-i I] [-all_in_path] [-path PATH] [-o O] [-seq] [-res] [-num] [-num_range] [-s_num] [-len] [-save_as_csv]`
+`usage: PDB_Missing_Residue.py [-h] [-i I] [-all_in_path] [-path PATH] [-o O] [-seq] [-res] [-num] [-num_range] [-s_num] [-len] [-save_as_csv]`
 
 The program takes the following command line arguments to determine missing residues:
 ```
@@ -49,7 +49,7 @@ The program **Missing_Residue_Sequence.py** takes the same kind of inputs as **M
 If no ouput filepath (or filename) is provided, then uses default "output.fasta" as output file. If the output file already exists, then the program will exit, indicating "Given output file already exists!", preventing any overwriting on an existing file. By default all files will be downloaded to "temp_files" folder in current working directory.
 
 
-`usage: project1a.py [-h] [-i I] [-all_in_path] [-path PATH] [-o O] `
+`usage: Missing_Residue_Sequence.py [-h] [-i I] [-all_in_path] [-path PATH] [-o O] `
 
 The program takes the following command line arguments
 ```
