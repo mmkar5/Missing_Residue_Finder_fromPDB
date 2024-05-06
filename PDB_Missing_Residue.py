@@ -125,7 +125,7 @@ def get_args():
         "-o",
         required=False,
         type=str,
-        help="Enter output filepath, if ouput to be saved in a file",
+        help="Enter output filepath, if output to be saved in a file",
     )
     parser.add_argument(
         "-seq",
