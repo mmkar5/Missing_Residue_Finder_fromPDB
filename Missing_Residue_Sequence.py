@@ -1,4 +1,5 @@
 from PDB_Missing_Residue import pdbseq_with_missing_res, get_input, get_PDBx
+from PDB_Missing_Residue_unique import unique_chain_missing_res
 import argparse
 from Bio.PDB.MMCIF2Dict import MMCIF2Dict
 import os
@@ -25,11 +26,18 @@ def main():
         res_names = pdb_info["_pdbx_poly_seq_scheme.pdb_mon_id"]
         all_res_names = pdb_info["_pdbx_poly_seq_scheme.mon_id"]
         id = filename.split("\\")[-1].split(".cif")[0].upper()
-        for chain, sequence in pdbseq_with_missing_res(
-            chains, res_names, all_res_names
-        ).items():
-            output_file.write(">" + id + "_" + chain + "\n")
-            output_file.write(sequence + "\n")
+        if args.unique:
+            for chain, sequence in unique_chain_missing_res(
+                pdbseq_with_missing_res(chains, res_names, all_res_names)
+            ).items():
+                output_file.write(">" + id + "_" + chain + "\n")
+                output_file.write(sequence + "\n")
+        else:
+            for chain, sequence in pdbseq_with_missing_res(
+                chains, res_names, all_res_names
+            ).items():
+                output_file.write(">" + id + "_" + chain + "\n")
+                output_file.write(sequence + "\n")
 
     output_file.close()
 
@@ -66,9 +74,14 @@ def get_args():
         help="Enter output filepath, if ouput to be saved in a file",
     )
 
+    parser.add_argument(
+        "-unique",
+        action="store_true",
+        help="Remove chains having same sequence and mssing residues",
+    )
+
     args = parser.parse_args()
     return args
-
 
 if __name__ == "__main__":
     main()
