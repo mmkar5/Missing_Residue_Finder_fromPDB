@@ -63,9 +63,9 @@ The program takes the following command line arguments
   -o O          Enter output filepath, if output to be saved in a file
   -unique       Remove chains having same sequence and mssing residue
 ```
-## Description for Missing_Residue_Sequence_unique
+## Description for PDB_Missing_Residue_unique
 
-Same as **Missing_Residue_Sequence**, except that the chains having same sequence as well as missing residue information are removed and such chain names are concatenated.
+Same as **PDB_Missing_Residue.py**, except that the chains having same sequence as well as missing residue information are removed and such chain names are concatenated.
 
 
 
