@@ -4,6 +4,8 @@
 2. **Missing_Residue_Sequence.py**
 3. **PDB_Missing_Residue_unique.py**
 
+The program requires biophython to be installed.
+
 ## Description for PDB_Missing_Residue
 The program **PDB_Missing_Residue.py** takes as input PDB_IDs or looks for all the mmCIF file present in the given directory, and for each such file, can provide the following information -
 - Protein sequence with missing residues in lower case
@@ -45,7 +47,7 @@ The outputs are provided in the following ways:
 
 ## Description for Missing_Residue_Sequence
 
-The program **Missing_Residue_Sequence.py** takes the same kind of inputs as **Missing_Residue_Sequence.py**. It outputs the protein sequence, in the given file in a fasta format, where the missing residues in the protein sequence are in lower case, while the rest is in upper case. First, the identifier is given as >pdb_chain, then the next line contains the sequence and so on. 
+The program **Missing_Residue_Sequence.py** takes the same kind of inputs as **Missing_Residue_Sequence.py**. It outputs the protein sequence, in the given file in a fasta format, where the missing residues in the protein sequence are in lower case, while the rest is in upper case. First, the identifier is given as >pdb_chain, then the next line contains the sequence and so on. If -unique is used, then chains having same sequence as well as missing residue information are removed and such chain names are concatenated.
 
 If no ouput filepath (or filename) is provided, then uses default "output.fasta" as output file. If the output file already exists, then the program will exit, indicating "Given output file already exists!", preventing any overwriting on an existing file. By default all files will be downloaded to "temp_files" folder in current working directory.
 
@@ -61,7 +63,10 @@ The program takes the following command line arguments
   -o O          Enter output filepath, if output to be saved in a file
   -unique       Remove chains having same sequence and mssing residue
 ```
+## Description for Missing_Residue_Sequence_unique
 
-The program requires biophython to be installed.
+Same as **Missing_Residue_Sequence**, except that the chains having same sequence as well as missing residue information are removed and such chain names are concatenated.
+
+
 
 Cock, P.J. et al., 2009. Biopython: freely available Python tools for computational molecular biology and bioinformatics. Bioinformatics, 25(11), pp.1422–1423.
