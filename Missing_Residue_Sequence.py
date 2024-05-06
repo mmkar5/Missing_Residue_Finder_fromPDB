@@ -71,7 +71,7 @@ def get_args():
         required=False,
         default="output.fasta",
         type=str,
-        help="Enter output filepath, if ouput to be saved in a file",
+        help="Enter output filepath, if output to be saved in a file",
     )
 
     parser.add_argument(
