@@ -4,7 +4,7 @@
 2. **Missing_Residue_Sequence.py**
 3. **PDB_Missing_Residue_unique.py**
 
-The program requires biophython to be installed.
+The program requires biopython to be installed.
 
 ## Description for PDB_Missing_Residue
 The program **PDB_Missing_Residue.py** takes as input PDB_IDs or looks for all the mmCIF file present in the given directory, and for each such file, can provide the following information -
