@@ -2,6 +2,7 @@
 ## Contents
 1. **PDB_Missing_Residue.py**
 2. **Missing_Residue_Sequence.py**
+3. **PDB_Missing_Residue_unique.py**
 
 ## Description for PDB_Missing_Residue
 The program **PDB_Missing_Residue.py** takes as input PDB_IDs or looks for all the mmCIF file present in the given directory, and for each such file, can provide the following information -
@@ -18,7 +19,7 @@ The program takes the following command line arguments to determine missing resi
   -i I          Enter input filepath containg pdb_ids in each line
   -all_in_path  uses all the mmCIF files in the given path as input, ignores -i
   -path PATH    Enter the path where the mmCIF input files are present, or will be dowloaded in
-  -o O          Enter output filepath, if ouput to be saved in a file
+  -o O          Enter output filepath, if output to be saved in a file
   -seq          obtain sequence of pdb coordinates in single line with missing residues as small letters
   -res          obtain the missing residues
   -num          obtain the positions of the missing residues in the pdb(mmCIF) file
@@ -44,12 +45,12 @@ The outputs are provided in the following ways:
 
 ## Description for Missing_Residue_Sequence
 
-The program **Missing_Residue_Sequence.py** takes the same kind of inputs as **Missing_Residue_Sequence.py**. It outputs the protein sequence, in the given file in a fasta format, where the missing residues in the protein sequence are in lower case, while the rest is in upper case. First, the identifier is given as >pdb_chain, then the next line contains the sequence and so on.
+The program **Missing_Residue_Sequence.py** takes the same kind of inputs as **Missing_Residue_Sequence.py**. It outputs the protein sequence, in the given file in a fasta format, where the missing residues in the protein sequence are in lower case, while the rest is in upper case. First, the identifier is given as >pdb_chain, then the next line contains the sequence and so on. 
 
 If no ouput filepath (or filename) is provided, then uses default "output.fasta" as output file. If the output file already exists, then the program will exit, indicating "Given output file already exists!", preventing any overwriting on an existing file. By default all files will be downloaded to "temp_files" folder in current working directory.
 
 
-`usage: Missing_Residue_Sequence.py [-h] [-i I] [-all_in_path] [-path PATH] [-o O] `
+`usage: Missing_Residue_Sequence.py [-h] [-i I] [-all_in_path] [-path PATH] [-o O] [-unique] `
 
 The program takes the following command line arguments
 ```
@@ -57,7 +58,8 @@ The program takes the following command line arguments
   -i I          Enter input filepath containg pdb_ids in each line
   -all_in_path  uses all the mmCIF files in the given path as input, ignores -pdb_id_list
   -path PATH    Enter the path where the mmCIF input files are present, or will be dowloaded in
-  -o O          Enter output filepath, if ouput to be saved in a file
+  -o O          Enter output filepath, if output to be saved in a file
+  -unique       Remove chains having same sequence and mssing residue
 ```
 
 The program requires biophython to be installed.
