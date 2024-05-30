@@ -67,6 +67,10 @@ The program takes the following command line arguments
 
 Same as **PDB_Missing_Residue.py**, except that the chains having same sequence as well as missing residue information are removed and such chain names are concatenated.
 
+## Description for PDB_Missing_Residue_unique
+
+Processes just the mmCIF header files, and after processing deletes the downloaded files.
+
 
 
 Cock, P.J. et al., 2009. Biopython: freely available Python tools for computational molecular biology and bioinformatics. Bioinformatics, 25(11), pp.1422–1423.
