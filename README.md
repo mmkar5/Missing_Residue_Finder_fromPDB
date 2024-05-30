@@ -3,7 +3,7 @@
 1. **PDB_Missing_Residue.py**
 2. **Missing_Residue_Sequence.py**
 3. **PDB_Missing_Residue_unique.py**
-
+4. **PDB_Missing_Residue_efficient.py**
 The program requires biopython to be installed.
 
 ## Description for PDB_Missing_Residue
@@ -67,7 +67,7 @@ The program takes the following command line arguments
 
 Same as **PDB_Missing_Residue.py**, except that the chains having same sequence as well as missing residue information are removed and such chain names are concatenated.
 
-## Description for PDB_Missing_Residue_unique
+## Description for PDB_Missing_Residue_efficient
 
 Processes just the mmCIF header files, and after processing deletes the downloaded files.
 
