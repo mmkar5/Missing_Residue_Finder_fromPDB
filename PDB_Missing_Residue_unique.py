@@ -1,5 +1,6 @@
 from PDB_Missing_Residue import *
 
+
 def main():
     args = get_args()
 
@@ -29,7 +30,7 @@ def main():
         res_num = pdb_info["_pdbx_poly_seq_scheme.pdb_seq_num"]
         seqid_res_num = pdb_info["_pdbx_poly_seq_scheme.seq_id"]
 
-        results.append(f"PDB id:{filename.split("\\")[-1].split(".cif")[0].upper()}")
+        results.append(f"PDB id:{filename.split('.cif')[0]}")
 
         if args.seq:
             results.append(
@@ -64,7 +65,7 @@ def main():
                         filednames = ["ID", "Chain", "residue", "range", "length"]
                         writer.writerow(filednames)
                         header = 1
-                    id = [filename.split("\\")[-1].split(".cif")[0].upper()]
+                    id = [filename.split(".cif")[0].upper()]
                     res = unique_chain_missing_res(
                         missing_res_name(chains, res_names, all_res_names)
                     )
@@ -98,9 +99,9 @@ def main():
 
 
 def unique_chain_missing_res(missing_res_dict):
-    '''Returns a dictionary of [Chains:missing_res_information], where the chains having same missing_res and sequence are combined.
-       missing_res_dict= [Chains:missing_res_information] as input
-    '''
+    """Returns a dictionary of [Chains:missing_res_information], where the chains having same missing_res and sequence are combined.
+    missing_res_dict= [Chains:missing_res_information] as input
+    """
     combined_dict = {}
     for chain, missing_res in missing_res_dict.items():
         if missing_res not in combined_dict.values():
