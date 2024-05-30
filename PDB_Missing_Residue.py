@@ -6,6 +6,7 @@ import argparse
 import csv
 import sys
 
+
 def main():
     args = get_args()
 
@@ -14,7 +15,7 @@ def main():
     else:
         path = r"temp_files"
 
-    pdb_ids=get_input(args.i,args.all_in_path)
+    pdb_ids = get_input(args.i, args.all_in_path)
 
     if args.o:
         if os.path.exists(args.o):
@@ -35,8 +36,8 @@ def main():
         res_num = pdb_info["_pdbx_poly_seq_scheme.pdb_seq_num"]
         seqid_res_num = pdb_info["_pdbx_poly_seq_scheme.seq_id"]
 
-        results.append(f"PDB id:{filename.split("\\")[-1].split(".cif")[0].upper()}")
-        
+        results.append(f"PDB id:{os.path.basename(filename).split('.cif')[0].upper()}")
+
         if args.seq:
             results.append(
                 f"Sequence:{pdbseq_with_missing_res(chains, res_names, all_res_names)}"
@@ -70,7 +71,7 @@ def main():
                         filednames = ["ID", "Chain", "residue", "range", "length"]
                         writer.writerow(filednames)
                         header = 1
-                    id = [filename.split("\\")[-1].split(".cif")[0].upper()]
+                    id = [os.path.basename(filename).split(".cif")[0].upper()]
                     res = missing_res_name(chains, res_names, all_res_names)
                     res_position_range = convert_to_ranges(
                         missing_res_num(chains, res_names, res_num)
@@ -107,7 +108,7 @@ def get_args():
         "-i",
         required=False,
         type=str,
-        help="Enter input filepath containg pdb_ids in each line",
+        help="Enter input filepath containg pdb_ids in each line or comma seperated",
     )
     parser.add_argument(
         "-all_in_path",
@@ -162,20 +163,22 @@ def get_args():
     args = parser.parse_args()
     return args
 
-def get_input(filepath=None,all_in_path=False):
-    '''Returns the pdb_ids as a list. Takes input from user as a input file containing pdb_ids in seperate lines,
-       or prompts user to provide the pdb id in the terminal.
-       filepath= name of the input file(with filepath, if not in cwd) (optional)
-       all_in_path= True if all the mmCIF files in the path needs to be processed (Default=False)
-    ''' 
-    pdb_ids=[]
+
+def get_input(filepath=None, all_in_path=False):
+    """Returns the pdb_ids as a list. Returns the pdb_ids as a list. Takes input from user as a input file containing pdb_ids in seperate lines or comma-seperated,
+    or prompts user to provide the pdb id in the terminal.
+    filepath= name of the input file(with filepath, if not in current working directory) (optional)
+    all_in_path= True if all the mmCIF files in the path needs to be processed (Default=False)
+    """
+    pdb_ids = []
     if filepath:
         with open(filepath) as file:
             for line in file:
-                if not line.isspace():
-                    pdb_ids.append(line.strip().lower())
-    elif all_in_path:
-        pdb_ids = None
+                if "," in line:
+                    pdb_ids = line.split(",")
+                else:
+                    if not line.isspace():
+                        pdb_ids.append(line.strip().lower())
     else:
         print("Press Ctrl+C, when no input left to enter")
         while True:
@@ -185,6 +188,7 @@ def get_input(filepath=None,all_in_path=False):
                 print()
                 break
     return pdb_ids
+
 
 def get_PDBx(path, pdb_ids=None, all_in_path=False):
     """Locates or downloads the required mmCIF files in the given path and returns the filepath
@@ -201,7 +205,7 @@ def get_PDBx(path, pdb_ids=None, all_in_path=False):
             yield filename
     else:
         for filename in glob.glob(os.path.join(path, "*.cif")):
-            if filename.split("\\")[-1].split(".cif")[0] in pdb_ids:
+            if os.path.basename(filename).split(".cif")[0].lower() in pdb_ids:
                 yield filename
 
 
@@ -332,6 +336,7 @@ def convert_to_ranges(num_dict):
             len_dict[key] = len_str
 
     return range_dict, len_dict
+
 
 if __name__ == "__main__":
     main()
