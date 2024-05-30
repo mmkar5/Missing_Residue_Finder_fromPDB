@@ -25,7 +25,7 @@ def main():
         chains = pdb_info["_pdbx_poly_seq_scheme.asym_id"]
         res_names = pdb_info["_pdbx_poly_seq_scheme.pdb_mon_id"]
         all_res_names = pdb_info["_pdbx_poly_seq_scheme.mon_id"]
-        id = filename.split("\\")[-1].split(".cif")[0].upper()
+        id = os.path.basename(filename).split('.cif')[0].upper()
         if args.unique:
             for chain, sequence in unique_chain_missing_res(
                 pdbseq_with_missing_res(chains, res_names, all_res_names)
@@ -52,7 +52,7 @@ def get_args():
         "-i",
         required=False,
         type=str,
-        help="Enter input filepath containg pdb_ids in each line",
+        help="Enter input filepath containg pdb_ids in each line or comma seperated",
     )
     parser.add_argument(
         "-all_in_path",

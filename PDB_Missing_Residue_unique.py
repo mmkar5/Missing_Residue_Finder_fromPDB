@@ -30,7 +30,7 @@ def main():
         res_num = pdb_info["_pdbx_poly_seq_scheme.pdb_seq_num"]
         seqid_res_num = pdb_info["_pdbx_poly_seq_scheme.seq_id"]
 
-        results.append(f"PDB id:{filename.split('.cif')[0]}")
+        results.append(f"PDB id:{os.path.basename(filename).split('.cif')[0].upper()}")
 
         if args.seq:
             results.append(
@@ -65,7 +65,7 @@ def main():
                         filednames = ["ID", "Chain", "residue", "range", "length"]
                         writer.writerow(filednames)
                         header = 1
-                    id = [filename.split(".cif")[0].upper()]
+                    id = [os.path.basename(filename).split('.cif')[0].upper()]
                     res = unique_chain_missing_res(
                         missing_res_name(chains, res_names, all_res_names)
                     )
