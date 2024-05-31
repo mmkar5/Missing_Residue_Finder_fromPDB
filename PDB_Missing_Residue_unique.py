@@ -24,7 +24,7 @@ def main():
     for filename in get_PDBx(path, pdb_ids, all_in_path=args.all_in_path):
         results = []
         pdb_info = MMCIF2Dict(filename)
-        chains = pdb_info["_pdbx_poly_seq_scheme.asym_id"]
+        chains = pdb_info["_pdbx_poly_seq_scheme.pdb_strand_id"]
         res_names = pdb_info["_pdbx_poly_seq_scheme.pdb_mon_id"]
         all_res_names = pdb_info["_pdbx_poly_seq_scheme.mon_id"]
         res_num = pdb_info["_pdbx_poly_seq_scheme.pdb_seq_num"]
