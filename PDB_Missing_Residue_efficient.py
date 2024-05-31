@@ -32,6 +32,7 @@ def main():
         seqid_res_num = pdb_info["_pdbx_poly_seq_scheme.seq_id"]
 
         results.append(f"PDB id:{filename.split('.cif')[0]}")
+        os.remove(filename)
 
         if args.seq:
             results.append(
@@ -43,19 +44,19 @@ def main():
             )
         if args.num:
             results.append(
-                f"Missing residue position:{missing_res_num(chains, res_names, res_num)}"
+                f"Missing residue position:{missing_res_num(chains, res_names, res_num,all_res_names)}"
             )
         if args.num_range:
             results.append(
-                f"Missing residue position range:{convert_to_ranges(missing_res_num(chains, res_names, res_num))[0]}"
+                f"Missing residue position range:{convert_to_ranges(missing_res_num(chains, res_names, res_num, all_res_names))[0]}"
             )
         if args.s_num:
             results.append(
-                f"Missing residue serial number:{missing_res_num(chains, res_names, seqid_res_num)}"
+                f"Missing residue serial number:{missing_res_num(chains, res_names, seqid_res_num, all_res_names)}"
             )
         if args.len:
             results.append(
-                f"Missing residue range length:{convert_to_ranges(missing_res_num(chains, res_names, res_num))[1]}"
+                f"Missing residue range length:{convert_to_ranges(missing_res_num(chains, res_names, res_num,all_res_names))[1]}"
             )
 
         for result in results:
@@ -69,10 +70,10 @@ def main():
                     id = [filename.split(".cif")[0]]
                     res = missing_res_name(chains, res_names, all_res_names)
                     res_position_range = convert_to_ranges(
-                        missing_res_num(chains, res_names, res_num)
+                        missing_res_num(chains, res_names, res_num,all_res_names)
                     )[0]
                     res_length = convert_to_ranges(
-                        missing_res_num(chains, res_names, res_num)
+                        missing_res_num(chains, res_names, res_num, all_res_names)
                     )[1]
                     writer.writerows(
                         zip(
@@ -88,7 +89,6 @@ def main():
                     output_file.write(result + "\n")
             else:
                 print(result)
-        os.remove(filename)
 
     if output_file:
         output_file.close()
@@ -149,7 +149,7 @@ def get_args():
 
 
 def get_input(filepath=None):
-    """Returns the pdb_ids as a list. Takes input from user as a input file containing pdb_ids in seperate lines,
+    """Returns the pdb_ids as a list. Takes input from user as a input file containing pdb_ids in seperate lines or comma-seperated,
     or prompts user to provide the pdb id in the terminal.
     filepath= name of the input file(with filepath, if not in current working directory) (optional)
     """
@@ -197,12 +197,12 @@ def pdbseq_with_missing_res(chains, res_names, all_res_names):
     The protein sequence has one letter code, in uppercase, except for the missing residues which is in lowercase.
     Coverts three letter amino acid codes into one letter code before processing.
     chains = List of protein chains
-    res_names = List of all amino acid residues present in protein strrcture, where missing residues indicated as ?
-    all_res_names = List of all amino acid residues present in protein strrcture
+    res_names = List of all amino acid residues present in protein structure, where missing residues indicated as ?
+    all_res_names = List of all amino acid residues present in protein structure
     """
     output = {}
-    res_names = [res if res == "?" else seq1(res) for res in res_names]
-    missing_res = [seq1(res).lower() for res in all_res_names]
+    res_names = [res if res == "?" else seq1(res,undef_code='') for res in res_names]
+    missing_res = [seq1(res,undef_code='').lower() for res in all_res_names]
     for i in range(len(chains)):
         if i == 0:
             if res_names[i] == "?":
@@ -223,33 +223,35 @@ def pdbseq_with_missing_res(chains, res_names, all_res_names):
                 else:
                     var += res_names[i]
                 output[chains[i]] = var
+    output={k:v for k,v in output.items() if not v==""}
     return output
 
 
-def missing_res_num(chains, res_names, res_num):
+def missing_res_num(chains, res_names, res_num,all_res_names):
     """Returns a dictionary with the protein chain as keys and the position of missing amino acid residues as values.
     Coverts three letter amino acid codes into one letter code before processing.
     chains = List of protein chains
-    res_names = List of residues present in protein strrcture, where missing residues indicated as ?
+    res_names = List of residues present in protein structure, where missing residues indicated as ?
     res_num = List of numerical positions of the amino acid residues
     """
     output = {}
-    res_names = [res if res == "?" else seq1(res) for res in res_names]
+    res_names = [res if res == "?" else seq1(res,undef_code='') for res in res_names]
     var = ""
     for i in range(len(chains)):
         if i == 0:
-            if res_names[i] == "?":
+            if res_names[i] == "?" and seq1(all_res_names[i]) in list("ARNDCQEGHILKMFPSTWYVBJXUO"):
                 var = res_num[i] + ","
         else:
             if chains[i] == chains[i - 1]:
-                if res_names[i] == "?":
+                if res_names[i] == "?" and seq1(all_res_names[i]) in list("ARNDCQEGHILKMFPSTWYVBJXUO"):
                     var += res_num[i] + ","
                 output[chains[i]] = var.strip(",")
             else:
                 var = ""
-                if res_names[i] == "?":
+                if res_names[i] == "?" and seq1(all_res_names[i]) in list("ARNDCQEGHILKMFPSTWYVBJXUO"):
                     var += res_num[i] + ","
                 output[chains[i]] = var.strip(",")
+    output={k:v for k,v in output.items() if not v==""}
     return output
 
 
@@ -257,12 +259,12 @@ def missing_res_name(chains, res_names, all_res_names):
     """Returns a dictionary with the protein chain as keys and the missing amino acid residues as values.
     Coverts three letter amino acid codes into one letter code before processing.
     chains = List of protein chains
-    res_names = List of all amino acid residues present in protein strrcture, where missing residues indicated as ?
-    all_res_names = List of all amino acid residues present in protein strrcture
+    res_names = List of all amino acid residues present in protein structure, where missing residues indicated as ?
+    all_res_names = List of all amino acid residues present in protein structure
     """
     output = {}
     res_names = [res if res == "?" else seq1(res) for res in res_names]
-    missing_res = [seq1(res).lower() for res in all_res_names]
+    missing_res = [seq1(res,undef_code='').lower() for res in all_res_names]
     for i in range(len(chains)):
         if i == 0:
             if res_names[i] == "?":
@@ -285,6 +287,7 @@ def missing_res_name(chains, res_names, all_res_names):
                     if not var.endswith(" "):
                         var += " "
                 output[chains[i]] = var.strip()
+    output={k:v for k,v in output.items() if not v==""}
     return output
 
 
@@ -300,6 +303,7 @@ def convert_to_ranges(num_dict):
         except ValueError:
             range_str = value
             range_dict[key] = range_str
+            len_dict[key] = ""
         else:
             numbers.sort()
             ranges = []
@@ -315,8 +319,11 @@ def convert_to_ranges(num_dict):
             range_str = ",".join(f"{s}-{e}" if s != e else str(s) for s, e in ranges)
             range_dict[key] = range_str
 
-            len_str = ",".join(str(e - s + 1) for s, e in ranges)
-            len_dict[key] = len_str
+            if value:
+                len_str = ",".join(str(e - s + 1) for s, e in ranges)
+                len_dict[key] = len_str
+            else:
+                len_dict[key] = ""
 
     return range_dict, len_dict
 

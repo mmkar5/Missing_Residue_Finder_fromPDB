@@ -1,6 +1,5 @@
 from PDB_Missing_Residue import *
 
-
 def main():
     args = get_args()
 
@@ -15,7 +14,7 @@ def main():
         if os.path.exists(args.o):
             sys.exit("Given output file already exists!")
         else:
-            output_file = open(args.o, "w")
+            output_file = open(args.o, "w", newline="")
             if args.save_as_csv:
                 header = 0
     else:
@@ -42,19 +41,19 @@ def main():
             )
         if args.num:
             results.append(
-                f"Missing residue position:{unique_chain_missing_res(missing_res_num(chains, res_names, res_num))}"
+                f"Missing residue position:{unique_chain_missing_res(missing_res_num(chains, res_names, res_num, all_res_names))}"
             )
         if args.num_range:
             results.append(
-                f"Missing residue position range:{unique_chain_missing_res(convert_to_ranges(missing_res_num(chains, res_names, res_num))[0])}"
+                f"Missing residue position range:{unique_chain_missing_res(convert_to_ranges(missing_res_num(chains, res_names, res_num, all_res_names))[0])}"
             )
         if args.s_num:
             results.append(
-                f"Missing residue serial number:{unique_chain_missing_res(missing_res_num(chains, res_names, seqid_res_num))}"
+                f"Missing residue serial number:{unique_chain_missing_res(missing_res_num(chains, res_names, seqid_res_num, all_res_names))}"
             )
         if args.len:
             results.append(
-                f"Missing residue range length:{unique_chain_missing_res(convert_to_ranges(missing_res_num(chains, res_names, res_num))[1])}"
+                f"Missing residue range length:{unique_chain_missing_res(convert_to_ranges(missing_res_num(chains, res_names, res_num, all_res_names))[1])}"
             )
 
         for result in results:
@@ -70,12 +69,12 @@ def main():
                         missing_res_name(chains, res_names, all_res_names)
                     )
                     res_position_range = unique_chain_missing_res(
-                        convert_to_ranges(missing_res_num(chains, res_names, res_num))[
+                        convert_to_ranges(missing_res_num(chains, res_names, res_num, all_res_names))[
                             0
                         ]
                     )
                     res_length = unique_chain_missing_res(
-                        convert_to_ranges(missing_res_num(chains, res_names, res_num))[
+                        convert_to_ranges(missing_res_num(chains, res_names, res_num, all_res_names))[
                             1
                         ]
                     )
