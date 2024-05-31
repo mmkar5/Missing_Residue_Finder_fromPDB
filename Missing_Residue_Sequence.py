@@ -22,7 +22,7 @@ def main():
     pdb_ids = get_input(args.i, args.all_in_path)
     for filename in get_PDBx(path, pdb_ids, args.all_in_path):
         pdb_info = MMCIF2Dict(filename)
-        chains = pdb_info["_pdbx_poly_seq_scheme.asym_id"]
+        chains = pdb_info["_pdbx_poly_seq_scheme.pdb_strand_id"]
         res_names = pdb_info["_pdbx_poly_seq_scheme.pdb_mon_id"]
         all_res_names = pdb_info["_pdbx_poly_seq_scheme.mon_id"]
         id = os.path.basename(filename).split('.cif')[0].upper()
